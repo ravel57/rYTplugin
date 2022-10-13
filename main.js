@@ -29,6 +29,8 @@ function addEmbedButton() {
     embedButton.setAttribute("href", "https://www.youtube-nocookie.com/embed/"
         + new URL(window.location.href).searchParams.get('v'))
     embedButton.innerText = "E"
+    let isDarkMod = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    embedButton.style.color = isDarkMod ? "#fff" : "#000"
     document.getElementById("actions-inner")
         .childNodes[1].childNodes[0].childNodes[1]
         .appendChild(embedButton)
