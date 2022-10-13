@@ -1,9 +1,11 @@
 let container = document.getElementsByTagName("yt-formatted-string")
 let searchStrings = ["Не нравится", "Создать клип", "Поделиться", "Сохранить"]
+let hostname = new URL(window.location.href).hostname;
 let counter = 0
+let func
 
 
-function titleRemover() {
+function titleRemover(refreshIntervalId) {
     for (let i = 0; i < container.length; i++) {
         try {
             if (searchStrings.includes(container[i].innerText)) {
@@ -32,4 +34,18 @@ function addEmbedButton() {
         .appendChild(embedButton)
 }
 
-let refreshIntervalId = setInterval(() => titleRemover(), 100)
+function bannerRemover(refreshIntervalId) {
+    document.getElementsByClassName("ytp-pause-overlay")[0].remove()
+    clearInterval(refreshIntervalId)
+}
+
+window.onload = function () {
+    if (hostname.includes("youtube.com"))
+        func = titleRemover
+    else if (hostname.includes("youtube-nocookie.com"))
+        func = bannerRemover
+
+    let refreshIntervalId = setInterval(() => {
+        func(refreshIntervalId)
+    }, 100)
+}
